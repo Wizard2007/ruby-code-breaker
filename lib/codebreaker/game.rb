@@ -5,7 +5,7 @@ module Codebreaker
     end
 
     def start
-      @secret_code = 'Secr'
+      @secret_code = '1234'
     end
   end
 end
