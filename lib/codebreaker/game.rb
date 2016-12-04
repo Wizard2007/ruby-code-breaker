@@ -1,6 +1,6 @@
 module Codebreaker
   class Game
-    attr_accessor :cuser_name  
+    attr_accessor :cuser_name, :attempt_count, :hint_count
     def initialize
       @secret_code = ''
     end
