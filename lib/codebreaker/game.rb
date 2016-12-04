@@ -1,5 +1,6 @@
 module Codebreaker
   class Game
+    attr_accessor :cuser_name  
     def initialize
       @secret_code = ''
     end
@@ -18,6 +19,9 @@ module Codebreaker
     
     def secret_code_valid?(code)
       true
+    end
+    
+    def play_game
     end
   end
 end
