@@ -1,11 +1,11 @@
-require "spec_helper"
+require 'spec_helper'
 
-describe Codebreaker do
-  it "has a version number" do
-    expect(Codebreaker::VERSION).not_to be nil
-  end
-
-  it "does something useful" do
-    expect(false).to eq(true)
+module Codebreaker
+  RSpec.describe Game do
+    describe '#start' do
+      it 'generates secret code'
+      it 'saves 4 numbers secret code'
+      it 'saves secret code with numbers from 1 to 6'
+    end
   end
 end
