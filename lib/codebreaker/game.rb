@@ -2,7 +2,7 @@ module Codebreaker
   class Game
     attr_accessor :cuser_name, :attempt_count, :hint_count
     def initialize
-      @secret_code = ''
+      @secret_code = ''      
     end
 
     def start
@@ -10,13 +10,19 @@ module Codebreaker
     end
 
     def init_game
-      @secret_code = generate_secret_code     
+      generate_secret_code     
     end
     
     def generate_secret_code 
-      '1234'
-    end
-    
+      digits = []
+      @secret_code = ''
+      10.times {|i| digits << i}
+      4.times do
+        i = (rand() * digits.size).to_i       
+        @secret_code += digits[i].to_s
+        digits.delete_at(i)       
+      end      
+    end   
     def secret_code_valid?
       @secret_code.chars.each do |symbol|
         return false if @secret_code.count(symbol) > 1 

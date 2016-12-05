@@ -17,8 +17,8 @@ module Codebreaker
         expect(game.instance_variable_get(:@secret_code).length).to eq(4)
       end
 
-      it 'saves secret code with numbers from 1 to 6' do
-        expect(game.instance_variable_get(:@secret_code)).to match(/[1-6]+/)
+      it 'saves secret code with numbers from 1 to 9' do
+        expect(game.instance_variable_get(:@secret_code)).to match(/[1-9]+/)
       end      
          
       it 'secret code has different numbers' do        
@@ -30,6 +30,12 @@ module Codebreaker
         game.instance_variable_set(:@secret_code, '1233')
         expect(game.secret_code_valid?).to eq(false)
       end
+      
+      it 'valid generation' do 
+        game.generate_secret_code
+        expect(game.secret_code_valid?).to eq(true) 
+      end
+
       it 'user guess code'
 
       it 'user don\'t guess '
