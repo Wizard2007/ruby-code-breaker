@@ -22,12 +22,13 @@ module Codebreaker
       end      
          
       it 'secret code has different numbers' do        
-        expect(game.secret_code_valid?('1234')).to eq(true)
+        game.instance_variable_set(:@secret_code, '1234')
+        expect(game.secret_code_valid?).to eq(true)
       end
       
-      it 'secret code has equal numbers' do 
-        expect(game.secret_code_valid?('1233')).to eq(false)
-
+      it 'secret code has equal numbers' do
+        game.instance_variable_set(:@secret_code, '1233')
+        expect(game.secret_code_valid?).to eq(false)
       end
       it 'user guess code'
 

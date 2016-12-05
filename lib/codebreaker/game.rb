@@ -17,9 +17,9 @@ module Codebreaker
       '1234'
     end
     
-    def secret_code_valid?(code)
-      code.chars.each do |symbol|
-        return false if code.count(symbol) > 1 
+    def secret_code_valid?
+      @secret_code.chars.each do |symbol|
+        return false if @secret_code.count(symbol) > 1 
       end
       true
     end
