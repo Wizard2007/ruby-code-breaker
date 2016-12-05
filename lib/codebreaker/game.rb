@@ -29,7 +29,19 @@ module Codebreaker
       end
       true
     end
-    
+
+    def check_code(code)
+      result = ''
+      code.chars.each_with_index do |element, index|
+        if element == @secret_code[index] 
+          result += '+'  
+        else 
+          result += '-' if @secret_code.include?(element)
+        end
+      end
+      result
+    end
+   
     def play_game
     end
   end

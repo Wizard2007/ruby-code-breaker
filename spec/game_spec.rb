@@ -36,9 +36,21 @@ module Codebreaker
         expect(game.secret_code_valid?).to eq(true) 
       end
 
-      it 'user guess code'
+      it 'user guess code' do
+        game.instance_variable_set(:@secret_code, '1234')
+        expect(game.check_code('1234')).to eq('++++')
+      end
 
-      it 'user don\'t guess '
+      it 'user don\'t guess ' do
+        game.instance_variable_set(:@secret_code, '1234')
+        expect(game.check_code('5678')).to be_empty
+      end
+       
+      it 'user don\'t gues order of all digits' do
+        game.instance_variable_set(:@secret_code, '1234')
+        expect(game.check_code('4321')).to eq('----')
+      end
+       
     end
   end
 end
