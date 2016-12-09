@@ -1,8 +1,9 @@
 module Codebreaker
   class Game
-    attr_accessor :cuser_name, :attempt_count, :hint_count
+    attr_accessor :cuser_name, :attempt_count, :hint_count, :code_size
     def initialize
-      @secret_code = ''      
+      @secret_code = ''
+      @code_size = 4
     end
 
     def start
@@ -14,30 +15,25 @@ module Codebreaker
     end
     
     def generate_secret_code 
-      digits = []
-      @secret_code = ''
-      10.times {|i| digits << i}
-      4.times do
-        i = (rand() * digits.size).to_i       
-        @secret_code += digits[i].to_s
-        digits.delete_at(i)       
-      end      
-    end   
+      digits = [1,2,3,4,5,6]
+      @secret_code = digits.sample(code_size).join('')
+    end
+
     def secret_code_valid?
-      @secret_code.chars.each do |symbol|
-        return false if @secret_code.count(symbol) > 1 
-      end
-      true
+      "/[1-@{code_size}]+/".match(@secret_code)
     end
 
     def check_code(code)
       result = ''
+      l_code = string.new(@secret_code)
       code.chars.each_with_index do |element, index|
-        if element == @secret_code[index] 
-          result += '+'  
-        else 
-          result += '-' if @secret_code.include?(element)
+        if element == @l_code[index]
+          result += '+'
+        else
+          result += '-' if l_code.include?(element)
         end
+        l_code[index] = '*'
+        code[index] = '*'
       end
       result
     end
