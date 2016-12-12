@@ -28,14 +28,18 @@ module Codebreaker
       return result = '++++' if @secret_code == code
       l_code = String.new(@secret_code)
       code.chars.each_with_index do |element, index|
-        l_include_index = nil
-        if element == @l_code[index]
+        l_include_index = 0
+        if element == l_code[index]
           result += '+'
         else
           l_include_index = l_code.index(element)
-          result += '-' if l_include_index
+          if l_include_index   
+            result += '-' 
+          else 
+            l_include_index = 0
+          end 
         end
-        if l_include_index 
+        if l_include_index == 0
           l_code[index] = '*'
         else 
           l_code[l_include_index] = '*'
