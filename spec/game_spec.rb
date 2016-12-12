@@ -18,13 +18,8 @@ module Codebreaker
 
       it 'saves secret code with numbers from 1 to 6' do
         expect(subject.instance_variable_get(:@secret_code)).to match(/[1-6]+/)
-      end      
-         
-      it 'secret code has different numbers' do
-        subject.instance_variable_set(:@secret_code, '1234')
-        expect(subject.secret_code_valid?).to eq(true)
-      end    
-            
+      end               
+                
       it 'valid generation' do
         subject.generate_secret_code
         expect(subject.secret_code_valid?).to eq(true)
