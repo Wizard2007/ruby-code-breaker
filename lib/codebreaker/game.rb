@@ -25,14 +25,21 @@ module Codebreaker
 
     def check_code(code)
       result = ''
+      return result = '++++' if @secret_code == code
       l_code = String.new(@secret_code)
       code.chars.each_with_index do |element, index|
+        l_include_index = nil
         if element == @l_code[index]
           result += '+'
         else
-          result += '-' if l_code.include?(element)
+          l_include_index = l_code.index(element)
+          result += '-' if l_include_index
         end
-        l_code[index] = '*'
+        if l_include_index 
+          l_code[index] = '*'
+        else 
+          l_code[l_include_index] = '*'
+        end
         code[index] = '*'
       end
       result
