@@ -19,13 +19,13 @@ module Codebreaker
       @secret_code = digits.sample(code_size).join('')
     end
 
-    def secret_code_valid?
-      "/[1-@{code_size}]+/".match(@secret_code)
+    def secret_code_valid?       
+      @secret_code.match( /[1-6]+/) ? true : false
     end
 
     def check_code(code)
       result = ''
-      l_code = string.new(@secret_code)
+      l_code = String.new(@secret_code)
       code.chars.each_with_index do |element, index|
         if element == @l_code[index]
           result += '+'
