@@ -4,6 +4,11 @@ require 'codebreaker/game'
 
 module Codebreaker
   class ConsoleService  
+    attr_accessor :is_game_over. :is_session_over
+    def initializer()
+      @is_game_over = false
+      @is_session_over = false
+    end
     def get_user_input
       user_input = gets.chmod!
       (user_input != '') ? process_user_input(user_input) : process_user_input(:empty_input)
@@ -19,7 +24,8 @@ module Codebreaker
       puts "unknown command '#{command}'"
     end
     def exit
-      puts 'your exit game'
+      @is_session_over = true
+      puts 'your exit game'      
     end
   end
 end
