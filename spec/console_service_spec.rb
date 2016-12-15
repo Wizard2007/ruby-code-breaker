@@ -33,13 +33,17 @@ module Codebreaker
       end
     end
     context '# Test user input ' do
-      it 'it should get any user input' do
+      it 'it should get any not empty user input' do
         l_test_input = 'test input'
         subject.stub(:gets).and_return(l_test_input)
         expect(subject).to receive(:send).with(:unknown_command, l_test_input)
         subject.get_user_input
       end
-      it 'it should be not empty '
+      it 'it should be not empty' do
+        subject.stub(:gets).and_return('')
+        expect(subject).to receive(:send).with(:empty_input)
+        subject.get_user_input
+      end
       it 'it should be valid console command'
       it 'it should be validate by Game '
     end
