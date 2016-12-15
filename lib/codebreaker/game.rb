@@ -19,8 +19,9 @@ module Codebreaker
       @secret_code = digits.sample(code_size).join('')
     end
 
-    def secret_code_valid?       
-      @secret_code.match( /[1-6]+/) ? true : false
+      l_secret_code = @secret_code
+      l_secret_code = code if code && code != ''
+      l_secret_code.match( /[1-6]+/) ? true : false
     end
 
     def check_code(code)
