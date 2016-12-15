@@ -11,19 +11,21 @@ module Codebreaker
       end
       it 'hint should decrement variable @hint_count and print console message @hint_count > 0' do
         subject.instance_variable_set(:@hint_count, 1)
-        
-        expect{subject.exit}.to output("One of digits is : 6\n").to_stdout
+        subject.current_game.stub(:get_hint_digit).and_return('6')
+        expect{subject.hint}.to output("one of digits is : 6\n").to_stdout
         expect(subject.instance_variable_get(:@hint_count)).to eq(0)
       end
 
       it 'hint should decrement variable @hint_count and print console message @hint_count = 0' do
-
+        subject.instance_variable_set(:@hint_count, 0)
+        expect{subject.hint}.to output("your spend all hints\n").to_stdout
+        expect(subject.instance_variable_get(:@hint_count)).to eq(0)
       end
 
       it 'puts unknown command' do         
         expect{subject.unknown_command('test')}.to output("unknown command 'test'\n").to_stdout        
       end
-      [:exit].each do |name|
+      [:exit, :hint].each do |name|
         it "should process_user_input #{name.to_s}" do           
           expect(subject).to receive(:send).with(name)
           subject.process_user_input(name)
@@ -31,9 +33,11 @@ module Codebreaker
       end
     end
     context '# Test user input ' do
-      it 'it should get user input' do 
-        #subject.stub(:gets).and_return('test input')
-        #subject.process_user_input        
+      it 'it should get any user input' do
+        l_test_input = 'test input'
+        subject.stub(:gets).and_return(l_test_input)
+        expect(subject).to receive(:send).with(:unknown_command, l_test_input)
+        subject.get_user_input
       end
       it 'it should be not empty '
       it 'it should be valid console command'

@@ -11,7 +11,7 @@ module Codebreaker
       @current_game = Game.new
     end
     def get_user_input
-      user_input = gets.chmod!
+      user_input = String.new(gets.chomp())
       (user_input != '') ? process_user_input(user_input) : process_user_input(:empty_input)
     end
     def process_user_input(user_input)
@@ -19,7 +19,7 @@ module Codebreaker
       #send(user_input)
     end
     def empty_input
-      puts 'your should enter comman or digits'
+      puts 'your should enter command or digits'
     end
     def unknown_command(command)
       puts "unknown command '#{command}'"
@@ -27,6 +27,15 @@ module Codebreaker
     def exit
       @is_session_over = true
       puts 'your exit game'
+    end
+    def hint
+      @hint_count -= 1
+      if (@hint_count <0) then
+        puts 'your spend all hints'
+        @hint_count = 0
+      else
+        puts "one of digits is : #{@current_game.get_hint_digit}"
+      end
     end
   end
 end
