@@ -51,5 +51,9 @@ module Codebreaker
    
     def play_game
     end
+
+    def get_hint_digit
+      @secret_code.to_a.sample
+    end
   end
 end

@@ -4,11 +4,22 @@ module Codebreaker
   RSpec.describe ConsoleService, 'Test ConsoleService' do
     subject { ConsoleService.new }
     context '# Test main console procedures ' do
-      it 'exit game STDOUT and set flag @is_session_over ' do
+      it 'exit game should set flag @is_session_over and print console message' do
         subject.instance_variable_set(:@is_session_over, false)
         expect{subject.exit}.to output("your exit game\n").to_stdout
         expect(subject.instance_variable_get(:@is_session_over)).to eq(true)
       end
+      it 'hint should decrement variable @hint_count and print console message @hint_count > 0' do
+        subject.instance_variable_set(:@hint_count, 1)
+        
+        expect{subject.exit}.to output("One of digits is : 6\n").to_stdout
+        expect(subject.instance_variable_get(:@hint_count)).to eq(0)
+      end
+
+      it 'hint should decrement variable @hint_count and print console message @hint_count = 0' do
+
+      end
+
       it 'puts unknown command' do         
         expect{subject.unknown_command('test')}.to output("unknown command 'test'\n").to_stdout        
       end
