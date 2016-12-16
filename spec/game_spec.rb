@@ -25,6 +25,10 @@ module Codebreaker
         expect(subject.secret_code_valid?).to eq(true)
       end
 
+      it 'it should detect nil input' do
+        expect(subject.secret_code_valid?(nil)).to eq(false)
+      end
+
       it 'user guess code' do
         subject.instance_variable_set(:@secret_code, '1234')
         expect(subject.check_code('1234')).to eq('++++')

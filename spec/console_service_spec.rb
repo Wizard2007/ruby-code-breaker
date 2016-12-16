@@ -25,9 +25,10 @@ module Codebreaker
       it 'puts unknown command' do         
         expect{subject.unknown_command('test')}.to output("unknown command 'test'\n").to_stdout        
       end
-      [:exit, :hint].each do |name|
-        it "should process_user_input #{name.to_s}" do           
-          expect(subject).to receive(:send).with(name)
+      [:exit, :hint, :show_validation_result].each do |name|
+        it "should process_user_input #{name.to_s}" do
+          subject.start
+          expect(subject).to receive(:send_user_input).with(name)
           subject.process_user_input(name)
         end
       end
@@ -35,17 +36,21 @@ module Codebreaker
     context '# Test user input ' do
       it 'it should get any not empty user input' do
         l_test_input = 'test input'
+        subject.start
         subject.stub(:gets).and_return(l_test_input)
         expect(subject).to receive(:send).with(:unknown_command, l_test_input)
         subject.get_user_input
       end
       it 'it should be not empty' do
+        subject.start
         subject.stub(:gets).and_return('')
         expect(subject).to receive(:send).with(:empty_input)
         subject.get_user_input
       end
-      it 'it should be valid console command'
-      it 'it should be validate by Game '
+
+      it 'it should be validate by Game'
+      it 'should test send_user_input'
+      it 'should test show_validation_result'
     end
   end
 end

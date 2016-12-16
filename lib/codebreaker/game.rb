@@ -20,8 +20,9 @@ module Codebreaker
     end
 
     def secret_code_valid?(code = '')
+      return false if code == nil
       l_secret_code = @secret_code
-      l_secret_code = code if code && code != ''
+      l_secret_code = code if code != ''
       l_secret_code.match( /[1-6]+/) ? true : false
     end
 
