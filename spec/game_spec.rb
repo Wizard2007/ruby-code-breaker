@@ -30,18 +30,24 @@ module Codebreaker
       end
 
       it 'user guess code' do
+        subject.instance_variable_set(:@step_count, 0)
         subject.instance_variable_set(:@secret_code, '1234')
         expect(subject.check_code('1234')).to eq('++++')
+        expect(subject.instance_variable_get(:@step_count)).to eq(1)
       end
 
       it 'user don\'t guess ' do
+        subject.instance_variable_set(:@step_count, 0)
         subject.instance_variable_set(:@secret_code, '1234')
         expect(subject.check_code('5678')).to be_empty
+        expect(subject.instance_variable_get(:@step_count)).to eq(1)
       end
        
       it 'user don\'t gues order of all digits' do
+        subject.instance_variable_set(:@step_count, 0)
         subject.instance_variable_set(:@secret_code, '1234')
         expect(subject.check_code('4321')).to eq('----')
+        expect(subject.instance_variable_get(:@step_count)).to eq(1)
       end
        
     end

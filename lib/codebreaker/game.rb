@@ -1,9 +1,10 @@
 module Codebreaker
   class Game
-    attr_accessor :cuser_name, :attempt_count, :hint_count, :code_size
+    attr_accessor :cuser_name, :attempt_count, :hint_count, :code_size, :user_vin, :step_count, :max_step_count
     def initialize
       @secret_code = ''
       @code_size = 4
+      @step_count = 0
     end
 
     def start
@@ -11,7 +12,8 @@ module Codebreaker
     end
 
     def init_game
-      generate_secret_code     
+      generate_secret_code
+      @step_count = 0
     end
     
     def generate_secret_code 
@@ -28,7 +30,12 @@ module Codebreaker
 
     def check_code(code)
       result = ''
-      return result = '++++' if @secret_code == code
+      @step_count += 1
+      @user_vin = false
+      if @secret_code == code
+        @user_vin = true
+        return result = '++++'
+      end
       l_code = String.new(@secret_code)
       code.chars.each_with_index do |element, index|
         l_include_index = 0
