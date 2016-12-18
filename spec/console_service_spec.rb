@@ -1,14 +1,30 @@
 require 'spec_helper'
+require 'spec_helper'
 
 module Codebreaker
   RSpec.describe ConsoleService, 'Test ConsoleService' do
     subject { ConsoleService.new }
     context '# Test main console procedures ' do
+
+      it 'yes procedure' do
+        subject.instance_variable_set(:@start_new_game, false)
+        expect{subject.yes}.to output("ok we will start new game\n").to_stdout
+        expect(subject.instance_variable_get(:@start_new_game)).to eq(true)
+      end
+      it 'no procedure' do
+        subject.instance_variable_set(:@start_new_game, true)
+        expect{subject.no}.to output("ok we will close your session\n").to_stdout
+        expect(subject.instance_variable_get(:@start_new_game)).to eq(false)
+      end
       it 'shoud print your vin' do
+        subject.instance_variable_set(:@is_game_over, false)
         expect{subject.your_vin}.to output("your vin\n").to_stdout
+        expect(subject.instance_variable_get(:@is_game_over)).to eq(true)
       end
       it 'shoud print your loose' do
+        subject.instance_variable_set(:@is_game_over, false)
         expect{subject.your_loose}.to output("your loose\n").to_stdout
+        expect(subject.instance_variable_get(:@is_game_over)).to eq(true)
       end
       it 'exit game should set flag @is_session_over and print console message' do
         subject.instance_variable_set(:@is_session_over, false)
@@ -21,24 +37,35 @@ module Codebreaker
         expect{subject.hint}.to output("one of digits is : 6\n").to_stdout
         expect(subject.instance_variable_get(:@hint_count)).to eq(0)
       end
-
       it 'hint should decrement variable @hint_count and print console message @hint_count = 0' do
         subject.instance_variable_set(:@hint_count, 0)
         expect{subject.hint}.to output("your spend all hints\n").to_stdout
         expect(subject.instance_variable_get(:@hint_count)).to eq(0)
       end
-
-      it 'puts unknown command' do         
-        expect{subject.unknown_command('test')}.to output("unknown command 'test'\n").to_stdout
+      it ' should call get_user_input puts start new game?' do
+        expect(subject).to receive(:get_user_input)
+        subject.instance_variable_set(:@restaet_was_called, false)
+        expect{subject.restart_game}.to output("start new game? type yes / no\n").to_stdout
+        expect(subject.instance_variable_get(:@restaet_was_called)).to eq(true)
       end
-      [:exit_, :hint, :show_validation_result, :your_vin,:your_lose].each do |name|
+      array_of_main_function = [:exit_, :hint, :show_validation_result, :your_vin,:your_lose,:restart_game,:yes,:no]
+      array_of_main_function.each do |name|
         it "should process_user_input #{name.to_s}" do
           subject.start
+          subject.instance_variable_set(:@restaet_was_called, false)
           expect(subject).to receive(:send_user_input).with(name)
           subject.process_user_input(name)
         end
       end
-
+      sub_array_of_main_function = array_of_main_function - [:yes,:no]
+      sub_array_of_main_function.each do |name|
+        it "should re ask  #{name.to_s}" do
+          subject.start
+          subject.instance_variable_set(:@restaet_was_called, true)
+          expect(subject).to receive(:send).with(:restart_game)
+          subject.process_user_input(name)
+        end
+      end
     end
     context '# Test user input ' do
       it 'should get any not empty user input' do
