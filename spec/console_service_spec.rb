@@ -47,10 +47,33 @@ module Codebreaker
         expect(subject).to receive(:send).with(:empty_input)
         subject.get_user_input
       end
+      it 'it should be validate by Game' do
+        subject.start
+        user_input = '1111'
+        expect(subject).to receive(:send).with(:show_validation_result,user_input)
+        subject.process_user_input(user_input)
+      end
+      it 'it not validated by game and call end_user_input(user_input)' do
+        subject.start
+        user_input = 'vvv'
+        expect(subject).to receive(:send_user_input).with(user_input)
+        subject.process_user_input(user_input)
+      end
+      [:test].each do |name|
+        it 'should test call process_user_input and call send_user_input :unknown_command #{name} ' do
+          subject.start
+          expect(subject).to receive(:send).with(:unknown_command, name.to_s)
+          subject.process_user_input(name)
+        end
+      end
 
-      it 'it should be validate by Game'
-      it 'should test send_user_input'
-      it 'should test show_validation_result'
+      [['1111','1111',"validation result : ++++\n"], ['1234','4321',"validation result : ----\n"] , ['1245','1254',"validation result : ++--\n"]].each do  |l_secret_code, l_code, l_out_put|
+        it "should show validation result for #{l_secret_code} and user input #{l_code}" do
+          subject.start
+          subject.current_game.instance_variable_set(:@secret_code, l_secret_code);
+          expect{subject.show_validation_result(l_code)}.to output(l_out_put).to_stdout
+        end
+      end
     end
   end
 end

@@ -3,10 +3,6 @@ module Codebreaker
     attr_reader :is_game_over, :is_session_over, :hint_count, :current_game
 
     def initializer()
-      @current_game = Game.new
-      @is_session_over = false
-      @is_game_over = false
-      @hint_count = 1
     end
     def start
       @current_game = Game.new
