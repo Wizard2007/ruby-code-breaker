@@ -20,7 +20,9 @@ module Codebreaker
       digits = [1,2,3,4,5,6]
       @secret_code = digits.sample(code_size).join('')
     end
-
+    def game_over?
+      @step_count <= @max_step_count
+    end
     def secret_code_valid?(code = '')
       return false if code == nil
       l_secret_code = @secret_code

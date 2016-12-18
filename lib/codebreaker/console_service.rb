@@ -1,8 +1,9 @@
 module Codebreaker
   class ConsoleService
-    attr_reader :is_game_over, :is_session_over, :hint_count, :current_game
+    attr_reader :is_game_over, :is_session_over, :hint_count, :current_game, :user_name
 
     def initializer()
+      @user_name = ''
     end
     def start
       @current_game = Game.new
@@ -27,10 +28,16 @@ module Codebreaker
     def empty_input
       puts 'your should enter command or digits'
     end
+    def your_vin
+      puts 'your vin'
+    end
+    def your_loose
+      puts 'your loose'
+    end
     def unknown_command(command)
       puts "unknown command '#{command}'"
     end   
-    def exit
+    def exit_
       @is_session_over = true
       puts 'your exit game'
     end
