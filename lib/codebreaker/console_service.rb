@@ -8,6 +8,7 @@ module Codebreaker
     end
     def start
       @current_game = Game.new
+      @current_game.start
       @is_session_over = false
       @is_game_over = false
       @hint_count = 1
@@ -80,8 +81,14 @@ module Codebreaker
     end
     def palay_game
       begin
-
-      end  until !@start_new_game
+        get_user_input
+      end  until @is_game_over
+    end
+    def app_thread
+      begin
+        start
+        play_game
+      end until !@start_new_game
     end
   end
 end
