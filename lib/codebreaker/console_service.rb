@@ -1,6 +1,7 @@
+require 'users'
 module Codebreaker
   class ConsoleService
-    attr_reader :is_game_over, :is_session_over, :hint_count, :current_game, :user_name, :start_new_game, :restaet_was_called
+    attr_reader :is_game_over, :is_session_over, :hint_count, :current_game, :user_name, :start_new_game, :restaet_was_called,:current_player
 
     def initializer()
       @user_name = ''
@@ -8,6 +9,7 @@ module Codebreaker
     end
     def start
       @current_game = Game.new
+      @current_player = Player.new
       @current_game.start
       @is_session_over = false
       @is_game_over = false
@@ -81,6 +83,7 @@ module Codebreaker
     end
     def palay_game
       begin
+        puts 'Enter command or answer'
         get_user_input
       end  until @is_game_over
     end
@@ -89,6 +92,10 @@ module Codebreaker
         start
         play_game
       end until !@start_new_game
+    end
+    def promt_user_name
+      puts 'Enter your Name'
+      current_player.name = gets().chomp()
     end
   end
 end

@@ -65,7 +65,9 @@ module Codebreaker
     end
 
     def get_hint_digit
-      @secret_code.to_a.sample
+      puts @secret_code
+
+      @secret_code.to_s.to_a.sample
     end
   end
 end

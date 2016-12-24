@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'spec_helper'
 
 module Codebreaker
   RSpec.describe ConsoleService, 'Test ConsoleService' do
