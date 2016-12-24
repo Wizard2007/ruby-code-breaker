@@ -1,4 +1,3 @@
-require 'users'
 module Codebreaker
   class ConsoleService
     attr_reader :is_game_over, :is_session_over, :hint_count, :current_game, :user_name, :start_new_game, :restaet_was_called,:current_player
@@ -6,6 +5,7 @@ module Codebreaker
     def initializer()
       @user_name = ''
       @start_new_game = true
+
     end
     def start
       @current_game = Game.new
@@ -18,7 +18,8 @@ module Codebreaker
       @restaet_was_called = false
     end
     def valid_answer?(user_input)
-      (user_input == :yes) || (user_input == :no)
+      puts "valid_answer?(#{user_input})"
+      (user_input == 'yes') || (user_input == 'no')
     end
     def get_user_input
       user_input = String.new(gets.chomp())
@@ -75,27 +76,43 @@ module Codebreaker
     end
     def yes
       @start_new_game = true
+      @restaet_was_called = false
       puts 'ok we will start new game'
     end
     def no
       @start_new_game = false
+      @restaet_was_called = false
       puts 'ok we will close your session'
     end
-    def palay_game
+    def play_game
       begin
+        if @current_game.user_vin == true
+          your_vin
+          restart_game
+          return
+        end
+        if @current_game.game_over?
+          your_loose
+          restart_game
+          return
+        end
         puts 'Enter command or answer'
         get_user_input
-      end  until @is_game_over
+
+      end  until (@is_game_over || @is_session_over)
+    end
+    def promt_user_name
+      puts 'Enter your Name'
+      @current_player.name = gets().chomp()
     end
     def app_thread
       begin
         start
+        promt_user_name
         play_game
-      end until !@start_new_game
-    end
-    def promt_user_name
-      puts 'Enter your Name'
-      current_player.name = gets().chomp()
+        puts "@start_new_game = #{@start_new_game}"
+        puts "@is_session_over = #{@is_session_over}"
+      end until (!@start_new_game || @is_session_over)
     end
   end
 end

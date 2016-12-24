@@ -5,6 +5,8 @@ module Codebreaker
       @secret_code = ''
       @code_size = 4
       @step_count = 0
+      @max_step_count = 10
+      @user_vin = false
     end
 
     def start
@@ -21,7 +23,7 @@ module Codebreaker
       @secret_code = digits.sample(code_size).join('')
     end
     def game_over?
-      @step_count <= @max_step_count
+      @step_count > @max_step_count
     end
     def secret_code_valid?(code = '')
       return false if code == nil
@@ -66,8 +68,7 @@ module Codebreaker
 
     def get_hint_digit
       puts @secret_code
-
-      @secret_code.to_s.to_a.sample
+      @secret_code.split('').sample
     end
   end
 end

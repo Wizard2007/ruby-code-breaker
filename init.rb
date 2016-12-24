@@ -1,7 +1,5 @@
-require 'codebreaker'
+require './lib/codebreaker.rb'
 
 console = Codebreaker::ConsoleService.new
-console.start
-console.promt_user_name
-console.palay_game
+console.app_thread
 puts console
