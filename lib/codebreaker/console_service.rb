@@ -1,12 +1,13 @@
 module Codebreaker
   class ConsoleService
-    attr_reader :is_game_over, :is_session_over, :hint_count, :current_game, :user_name, :start_new_game, :restaet_was_called,:current_player
+    attr_reader :is_game_over, :is_session_over, :hint_count, :current_game, :user_name, :start_new_game,
+                :restaet_was_called,:current_player
 
-    def initializer()
+    def initializer
       @user_name = ''
       @start_new_game = true
-
     end
+
     def start
       @current_game = Game.new
       @current_player = Player.new
@@ -17,14 +18,16 @@ module Codebreaker
       @start_new_game = false
       @restaet_was_called = false
     end
+
     def valid_answer?(user_input)
-      puts "valid_answer?(#{user_input})"
       (user_input == 'yes') || (user_input == 'no')
     end
+
     def get_user_input
       user_input = String.new(gets.chomp())
       (user_input != '') ? process_user_input(user_input) : process_user_input(:empty_input)
     end
+
     def process_user_input(user_input)
       if (!valid_answer?(user_input) && @restaet_was_called)
         send_user_input(:restart_game)
@@ -36,27 +39,34 @@ module Codebreaker
         send_user_input(user_input)
       end
     end
+
     def send_user_input(user_input)
       respond_to?(user_input) ? send(user_input) : send(:unknown_command, user_input.to_s)
     end
+
     def empty_input
       puts 'your should enter command or digits'
     end
-    def your_vin
+
+    def your_win
       @is_game_over = true
-      puts 'your vin'
+      puts 'your win'
     end
+
     def your_loose
       @is_game_over = true
       puts 'your loose'
     end
+
     def unknown_command(command)
       puts "unknown command '#{command}'"
-    end   
+    end
+
     def exit_
       @is_session_over = true
       puts 'your exit game'
     end
+
     def hint
       @hint_count -= 1
       if (@hint_count <0) then
@@ -66,45 +76,57 @@ module Codebreaker
         puts "one of digits is : #{@current_game.get_hint_digit}"
       end
     end
+
     def show_validation_result(code)
       puts "validation result : #{@current_game.check_code(code)}"
     end
+
     def restart_game
       puts 'start new game? type yes / no'
       @restaet_was_called = true
       get_user_input
     end
+
     def yes
       @start_new_game = true
       @restaet_was_called = false
       puts 'ok we will start new game'
     end
+
     def no
       @start_new_game = false
       @restaet_was_called = false
       puts 'ok we will close your session'
     end
+
+    def game_over?
+      @is_game_over = false;
+      if @current_game.user_win == true
+        your_win
+        restart_game
+        @is_game_over  = true
+      end
+      if @current_game.game_over?
+        your_loose
+        restart_game
+        result = true
+      end
+      @is_game_over
+    end
     def play_game
       begin
-        if @current_game.user_vin == true
-          your_vin
-          restart_game
-          return
+        if !game_over?
+          puts 'Enter command or answer'
+          get_user_input
         end
-        if @current_game.game_over?
-          your_loose
-          restart_game
-          return
-        end
-        puts 'Enter command or answer'
-        get_user_input
-
       end  until (@is_game_over || @is_session_over)
     end
+
     def promt_user_name
       puts 'Enter your Name'
       @current_player.name = gets().chomp()
     end
+
     def app_thread
       begin
         start
@@ -114,5 +136,6 @@ module Codebreaker
         puts "@is_session_over = #{@is_session_over}"
       end until (!@start_new_game || @is_session_over)
     end
+
   end
 end

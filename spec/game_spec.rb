@@ -3,7 +3,9 @@ require 'spec_helper'
 module Codebreaker
   RSpec.describe Game , 'Test Game' do
     subject {Game.new}
+
     context '#start' do
+
       before do
         subject.start
       end
@@ -49,11 +51,13 @@ module Codebreaker
         expect(subject.check_code('4321')).to eq('----')
         expect(subject.instance_variable_get(:@step_count)).to eq(1)
       end
+
       [[0,1,false],[1,1,true]]
       it 'should check game is over ' do
         subject.instance_variable_set(:@step_count, 1)
         subject.instance_variable_set(:@max_step_count, 1)
       end
+
     end
   end
 end

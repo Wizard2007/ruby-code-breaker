@@ -1,12 +1,12 @@
 module Codebreaker
   class Game
-    attr_accessor :cuser_name, :attempt_count, :hint_count, :code_size, :user_vin, :step_count, :max_step_count
+    attr_accessor :cuser_name, :attempt_count, :hint_count, :code_size, :user_win, :step_count, :max_step_count
     def initialize
       @secret_code = ''
       @code_size = 4
       @step_count = 0
       @max_step_count = 10
-      @user_vin = false
+      @user_win = false
     end
 
     def start
@@ -22,24 +22,27 @@ module Codebreaker
       digits = [1,2,3,4,5,6]
       @secret_code = digits.sample(code_size).join('')
     end
+
     def game_over?
       @step_count > @max_step_count
     end
+
     def secret_code_valid?(code = '')
-      return false if code == nil
+      return false if code.nil?
       l_secret_code = @secret_code
       l_secret_code = code if code != ''
       l_secret_code.match( /[1-6]+/) ? true : false
     end
 
+    def check_user_guess(code)
+      @user_win = @secret_code == code
+      @user_win ? '++++' : ''
+    end
+
     def check_code(code)
-      result = ''
       @step_count += 1
-      @user_vin = false
-      if @secret_code == code
-        @user_vin = true
-        return result = '++++'
-      end
+      result = check_user_guess(code)
+      return result if @user_win
       l_code = String.new(@secret_code)
       code.chars.each_with_index do |element, index|
         l_include_index = 0
@@ -47,27 +50,14 @@ module Codebreaker
           result += '+'
         else
           l_include_index = l_code.index(element)
-          if l_include_index   
-            result += '-' 
-          else 
-            l_include_index = 0
-          end 
+          l_include_index ? result += '-' : l_include_index = 0
         end
-        if l_include_index == 0
-          l_code[index] = '*'
-        else 
-          l_code[l_include_index] = '*'
-        end
-        code[index] = '*'
+        (l_include_index == 0) ? l_code[index] = '*' : l_code[l_include_index] = '*'
       end
       result
     end
-   
-    def play_game
-    end
 
     def get_hint_digit
-      puts @secret_code
       @secret_code.split('').sample
     end
   end
